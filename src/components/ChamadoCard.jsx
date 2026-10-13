@@ -1,4 +1,11 @@
-export default function ChamadoCard({ id, title, sector, resolved, onToggle }) {
+export default function ChamadoCard({
+  id,
+  title,
+  sector,
+  resolved,
+  onToggle,
+  onDelete,
+}) {
   return (
     <article className="ticket-card">
       <div>
@@ -13,6 +20,10 @@ export default function ChamadoCard({ id, title, sector, resolved, onToggle }) {
 
         <button type="button" onClick={() => onToggle(id)}>
           {resolved ? "Reabrir" : "Resolver"}
+        </button>
+
+        <button type="button" className="secondary" onClick={() => onDelete(id)}>
+          Excluir
         </button>
       </div>
     </article>

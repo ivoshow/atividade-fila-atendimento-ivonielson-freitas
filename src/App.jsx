@@ -1,19 +1,28 @@
+import { useState } from "react";
 import "./App.css";
 import ChamadoList from "./components/ChamadoList";
 import Panel from "./components/Panel";
 import { initialTickets } from "./data/chamados";
 
 export default function App() {
-  const resolvedCount = initialTickets.filter(
-    (ticket) => ticket.resolved,
-  ).length;
+  const [tickets, setTickets] = useState(initialTickets);
+
+  const resolvedCount = tickets.filter((ticket) => ticket.resolved).length;
 
   function handleToggleTicket(ticketId) {
-    const ticket = initialTickets.find((item) => item.id === ticketId);
+    setTickets((currentTickets) =>
+      currentTickets.map((ticket) =>
+        ticket.id === ticketId
+          ? { ...ticket, resolved: !ticket.resolved }
+          : ticket,
+      ),
+    );
+  }
 
-    if (ticket) {
-      window.alert(`Chamado "${ticket.title}" (id: ${ticket.id})`);
-    }
+  function handleDeleteTicket(ticketId) {
+    setTickets((currentTickets) =>
+      currentTickets.filter((ticket) => ticket.id !== ticketId),
+    );
   }
 
   return (
@@ -26,12 +35,16 @@ export default function App() {
 
       <Panel title="Resumo">
         <p className="summary">
-          {resolvedCount} de {initialTickets.length} chamados resolvidos.
+          {resolvedCount} de {tickets.length} chamados resolvidos.
         </p>
       </Panel>
 
       <Panel title="Chamados">
-        <ChamadoList tickets={initialTickets} onToggle={handleToggleTicket} />
+        <ChamadoList
+          tickets={tickets}
+          onToggle={handleToggleTicket}
+          onDelete={handleDeleteTicket}
+        />
       </Panel>
     </main>
   );
