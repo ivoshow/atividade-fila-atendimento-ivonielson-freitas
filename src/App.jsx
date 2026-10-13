@@ -1,8 +1,21 @@
 import "./App.css";
 import ChamadoList from "./components/ChamadoList";
+import Panel from "./components/Panel";
 import { initialTickets } from "./data/chamados";
 
 export default function App() {
+  const resolvedCount = initialTickets.filter(
+    (ticket) => ticket.resolved,
+  ).length;
+
+  function handleToggleTicket(ticketId) {
+    const ticket = initialTickets.find((item) => item.id === ticketId);
+
+    if (ticket) {
+      window.alert(`Chamado "${ticket.title}" (id: ${ticket.id})`);
+    }
+  }
+
   return (
     <main className="app">
       <header className="hero">
@@ -11,14 +24,15 @@ export default function App() {
         <p>Organize os chamados recebidos pelos setores.</p>
       </header>
 
-      <section className="panel">
-        <div className="panel-header">
-          <h2>Chamados</h2>
-        </div>
-        <div className="panel-content">
-          <ChamadoList tickets={initialTickets} />
-        </div>
-      </section>
+      <Panel title="Resumo">
+        <p className="summary">
+          {resolvedCount} de {initialTickets.length} chamados resolvidos.
+        </p>
+      </Panel>
+
+      <Panel title="Chamados">
+        <ChamadoList tickets={initialTickets} onToggle={handleToggleTicket} />
+      </Panel>
     </main>
   );
 }

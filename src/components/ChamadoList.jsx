@@ -1,6 +1,6 @@
 import ChamadoCard from "./ChamadoCard";
 
-export default function ChamadoList({ tickets }) {
+export default function ChamadoList({ tickets, onToggle }) {
   if (tickets.length === 0) {
     return <p>Nenhum chamado cadastrado.</p>;
   }
@@ -10,9 +10,11 @@ export default function ChamadoList({ tickets }) {
       {tickets.map((ticket) => (
         <ChamadoCard
           key={ticket.id}
+          id={ticket.id}
           title={ticket.title}
           sector={ticket.sector}
           resolved={ticket.resolved}
+          onToggle={onToggle}
         />
       ))}
     </div>
