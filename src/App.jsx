@@ -1,14 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import ChamadoForm from "./components/ChamadoForm";
 import ChamadoList from "./components/ChamadoList";
 import Panel from "./components/Panel";
 import { initialTickets } from "./data/chamados";
 
+const STORAGE_KEY = "iteam:fila-atendimento";
+
+function loadTickets() {
+  const savedTickets = localStorage.getItem(STORAGE_KEY);
+
+  if (!savedTickets) return initialTickets;
+
+  try {
+    const parsedTickets = JSON.parse(savedTickets);
+    return Array.isArray(parsedTickets) ? parsedTickets : initialTickets;
+  } catch {
+    return initialTickets;
+  }
+}
+
 export default function App() {
-  const [tickets, setTickets] = useState(initialTickets);
+  const [tickets, setTickets] = useState(loadTickets);
 
   const resolvedCount = tickets.filter((ticket) => ticket.resolved).length;
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
+  }, [tickets]);
+
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = `${resolvedCount}/${tickets.length} chamados resolvidos`;
+
+    return () => {
+      document.title = previousTitle;
+    };
+  }, [resolvedCount, tickets.length]);
 
   function handleAddTicket(newTicket) {
     setTickets((currentTickets) => [...currentTickets, newTicket]);
