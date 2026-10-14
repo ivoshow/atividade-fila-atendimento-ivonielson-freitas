@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router";
 import { ChamadosContext } from "../context/ChamadosContext";
 
 export default function ChamadoForm() {
@@ -6,6 +7,8 @@ export default function ChamadoForm() {
   const chamadosContext = useContext(ChamadosContext);
   const [form, setForm] = useState({ title: "", sector: "" });
   const [error, setError] = useState("");
+  // Liga a mensagem "Chamado cadastrado." depois de um cadastro com sucesso.
+  const [success, setSuccess] = useState(false);
 
   // Os hooks ficam todos acima desta verificação, sempre na mesma ordem.
   if (!chamadosContext) {
@@ -16,6 +19,9 @@ export default function ChamadoForm() {
 
   function handleChange(event) {
     const { name, value } = event.target;
+
+    // Começou a digitar outro chamado: a confirmação anterior some.
+    setSuccess(false);
 
     setForm((currentForm) => ({
       ...currentForm,
@@ -31,6 +37,7 @@ export default function ChamadoForm() {
 
     if (!title || !sector) {
       setError("Preencha o assunto e o setor.");
+      setSuccess(false);
       return;
     }
 
@@ -43,6 +50,7 @@ export default function ChamadoForm() {
 
     setForm({ title: "", sector: "" });
     setError("");
+    setSuccess(true);
   }
 
   return (
@@ -70,6 +78,13 @@ export default function ChamadoForm() {
       </div>
 
       {error && <p className="form-error">{error}</p>}
+
+      {/* Link (e não <a href>) para ir à fila sem recarregar a aplicação. */}
+      {success && (
+        <p className="notice">
+          Chamado cadastrado. <Link to="/">Ver a fila</Link>
+        </p>
+      )}
 
       <button type="submit">Cadastrar chamado</button>
     </form>

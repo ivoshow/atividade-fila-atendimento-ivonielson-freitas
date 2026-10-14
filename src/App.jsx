@@ -1,13 +1,15 @@
 import { useContext, useEffect } from "react";
+import { NavLink, Route, Routes } from "react-router";
 import "./App.css";
-import ChamadoForm from "./components/ChamadoForm";
-import ChamadoList from "./components/ChamadoList";
-import Panel from "./components/Panel";
 import { ChamadosContext } from "./context/ChamadosContext";
+import FilaPage from "./pages/FilaPage";
+import NaoEncontradaPage from "./pages/NaoEncontradaPage";
+import NovoChamadoPage from "./pages/NovoChamadoPage";
+import SobrePage from "./pages/SobrePage";
 
 export default function App() {
-  // O App não guarda mais a lista nem os handlers: só lê o contexto
-  // para mostrar o resumo e atualizar o título da aba.
+  // O App não guarda a lista nem os handlers: só lê o contexto
+  // para atualizar o título da aba.
   const chamadosContext = useContext(ChamadosContext);
 
   if (!chamadosContext) {
@@ -16,8 +18,8 @@ export default function App() {
 
   const { tickets, resolvedCount } = chamadosContext;
 
-  // Mostra o progresso no título da aba, ex.: "2/4 chamados resolvidos".
-  // Guardo o título antigo para devolver ele na limpeza do efeito.
+  // O título fica aqui no App porque o App aparece em todas as páginas,
+  // então a aba continua atualizada não importa a rota aberta.
   useEffect(() => {
     const previousTitle = document.title;
     document.title = `${resolvedCount}/${tickets.length} chamados resolvidos`;
@@ -28,28 +30,29 @@ export default function App() {
   }, [resolvedCount, tickets.length]);
 
   return (
-    <main className="app">
-      <header className="hero">
-        <p className="eyebrow">ITEAM · SUPORTE</p>
-        <h1>Fila de Atendimento</h1>
-        <p>Organize os chamados recebidos pelos setores.</p>
+    <div className="app-shell">
+      <header className="app-header">
+        <strong>Fila de Atendimento</strong>
+
+        {/* NavLink coloca a classe "active" sozinho no link da rota atual.
+            O "end" no "/" evita que ele fique ativo em todas as rotas. */}
+        <nav aria-label="Navegação principal">
+          <NavLink to="/" end>Fila</NavLink>
+          <NavLink to="/novo">Novo chamado</NavLink>
+          <NavLink to="/sobre">Sobre</NavLink>
+        </nav>
       </header>
 
-      {/* O Panel é só a moldura; o conteúdo de cada um vai como children. */}
-      <Panel title="Resumo">
-        <p className="summary">
-          {resolvedCount} de {tickets.length} chamados resolvidos.
-        </p>
-      </Panel>
-
-      {/* Formulário e lista buscam o que precisam direto no contexto. */}
-      <Panel title="Novo chamado">
-        <ChamadoForm />
-      </Panel>
-
-      <Panel title="Chamados">
-        <ChamadoList />
-      </Panel>
-    </main>
+      <main className="app">
+        {/* Routes olha a URL e mostra só a Route que corresponde.
+            O "*" pega qualquer endereço que não bateu com as anteriores. */}
+        <Routes>
+          <Route path="/" element={<FilaPage />} />
+          <Route path="/novo" element={<NovoChamadoPage />} />
+          <Route path="/sobre" element={<SobrePage />} />
+          <Route path="*" element={<NaoEncontradaPage />} />
+        </Routes>
+      </main>
+    </div>
   );
 }

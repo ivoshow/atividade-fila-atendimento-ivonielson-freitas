@@ -1,6 +1,6 @@
 # Fila de Atendimento — Atividade integradora React
 
-**ITEAM · Módulo 04 · Aulas 01–06**
+**ITEAM · Módulo 04 · Aulas 01–08**
 
 Projeto inicial para uma atividade prática individual. O objetivo é transformar
 uma tela estática em uma aplicação com componentes, estado, formulário e persistência.
@@ -25,3 +25,17 @@ com quatro chamados e CSS para as telas.
 
 **O que falta:** toda a lógica da atividade. Não há gabarito nem componentes
 implementados no projeto inicial.
+
+## Parte 2 — Aulas 07 e 08
+
+- **E7 · Context:** `src/context/ChamadosContext.jsx` exporta `ChamadosContext` e
+  `ChamadosProvider`, que guarda os chamados, a leitura inicial, a persistência e as
+  ações de cadastrar, resolver/reabrir e excluir.
+- **E8 · Rotas:** React Router no modo declarativo (`npm install react-router`).
+
+| URL      | Página              | Conteúdo                       |
+| -------- | ------------------- | ------------------------------ |
+| `/`      | `FilaPage`          | Resumo e Chamados              |
+| `/novo`  | `NovoChamadoPage`   | Cadastre um chamado            |
+| `/sobre` | `SobrePage`         | Fila de Atendimento            |
+| outra    | `NaoEncontradaPage` | 404 · Página não encontrada    |

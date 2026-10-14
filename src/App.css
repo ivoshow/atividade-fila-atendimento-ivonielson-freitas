@@ -32,3 +32,9 @@ button.secondary { background: #e5e9f1; color: #21344c; }
 .field input { display: block; width: 100%; padding: 10px 12px; border: 1px solid #bdcadb; border-radius: 8px; font: inherit; }
 .form-error { margin: 0; color: #b42318; font-weight: 700; }
 .summary { margin: 0; color: #374b64; }
+
+.app-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 4%; border-bottom: 1px solid #d7dde5; background: #ffffff; }
+.app-header nav { display: flex; flex-wrap: wrap; gap: 12px; }
+.app-header a { padding: 8px 10px; border-radius: 8px; color: #334155; text-decoration: none; }
+.app-header a.active { background: #1f2937; color: #ffffff; }
+.notice { margin: 0; color: #116244; font-weight: 700; }
