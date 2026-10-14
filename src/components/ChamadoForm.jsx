@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ChamadosContext } from "../context/ChamadosContext";
 
-export default function ChamadoForm({ onAddTicket }) {
+export default function ChamadoForm() {
+  // O formulário não recebe mais onAddTicket por props: pega addTicket do contexto.
+  const chamadosContext = useContext(ChamadosContext);
   const [form, setForm] = useState({ title: "", sector: "" });
   const [error, setError] = useState("");
+
+  // Os hooks ficam todos acima desta verificação, sempre na mesma ordem.
+  if (!chamadosContext) {
+    throw new Error("ChamadoForm precisa estar dentro de ChamadosProvider.");
+  }
+
+  const { addTicket } = chamadosContext;
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -24,7 +34,7 @@ export default function ChamadoForm({ onAddTicket }) {
       return;
     }
 
-    onAddTicket({
+    addTicket({
       id: crypto.randomUUID(),
       title,
       sector,
